@@ -2,7 +2,7 @@ function cultureChar = neuroFun(Spike)
 % Use Spike structure containing spike times, channels and amplitude
 % obtained from a MEA recording to compute a series of features from the
 % neuronal sample
-% 
+% ab
 
     %% Basic features
     fprintf('Computing basic features\n');
