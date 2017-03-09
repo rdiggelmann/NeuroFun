@@ -22,10 +22,10 @@ function [ adjMatrix ] = calcSTTCConnect( Spike, spikesSet )
     
     parfor i=1:nC
         disp(['Processing channel ' num2str(i)])
-        spikes1=spikesSet(spikesSet(:,2)==i,1);
+        spikes1=spikesSet(spikesSet(:,2)==c(i),1);
         iVals=zeros(1,i);
         for j=i+1:nC
-            spikes2=spikesSet(spikesSet(:,2)==j,1);
+            spikes2=spikesSet(spikesSet(:,2)==c(j),1);
             fr1=length(spikes1)/totalT;
             fr2=length(spikes2)/totalT;
             normR=2/((1/fr1)+(1/fr2));

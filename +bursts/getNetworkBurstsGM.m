@@ -130,22 +130,21 @@ function [Burst SpikeBurstNumber]=getNetworkBursts(Spike,params)
     
     %% Plot results   
     disp('Generating plots')
+    [channels, IDs_, channels_idx]= unique(Spike.C);
+    nC = numel(channels);
+    
     % Order y-axis channels by firing rates
-    tmp = zeros( 1, max(Spike.C)-min(Spike.C) );
-    for c = min(Spike.C):max(Spike.C)
-        tmp(c-min(Spike.C)+1) = length( find(Spike.C==c) );
+    tmp = zeros( 1, nC );
+    for ii = 1:nC
+        tmp(ii) = length( find(Spike.C==channels(ii)) );
     end
     [tmp ID] = sort(tmp);
-    OrderedChannels = zeros( 1, max(Spike.C)-min(Spike.C) );
-    for c = min(Spike.C):max(Spike.C)
-        OrderedChannels(c-min(Spike.C)+1) = find( ID==c-min(Spike.C)+1 );
-    end
     
     % Raster plot   
     figure, hold on;
     set(gca,'FontSize',30);
-    plot( Spike.T, OrderedChannels(Spike.C), 'k.' )
-    set( gca, 'ytick', (min(Spike.C):max(Spike.C))+1, 'yticklabel', ...
+    plot( Spike.T, channels_idx, 'k.' )
+    set( gca, 'ytick', channels, 'yticklabel', ...
     ID-min(ID)+min(Spike.C) ); % set yaxis to channel ID   
     % Plot times when bursts were detected
     ID = find(Burst.T_end<max(Spike.T));
@@ -153,7 +152,7 @@ function [Burst SpikeBurstNumber]=getNetworkBursts(Spike,params)
     for i=ID
         Detected = [ Detected Burst.T_start(i) Burst.T_end(i) NaN ];
     end
-    plot( Detected, (max(Spike.C)+5)*ones(size(Detected)), 'r', 'linewidth', 40 )   
+    plot( Detected, (nC+5)*ones(size(Detected)), 'r', 'linewidth', 40 )   
     xlabel 'Time [sec]'
     ylabel 'Unit'
     legend('Spike Times','Bursts');
